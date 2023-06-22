@@ -66,11 +66,11 @@ const inputClosePin = document.querySelector('.form__input--pin');
 // procedures
 
 const diplayMovements = function (movements) {
+  // to set movements dummy inputs to empty
+  containerMovements.innerHTML = '';
+
   // creating html with the movements information/transaction history
   movements.forEach(function (amount, i) {
-    // to set movements dummy inputs to empty
-    containerMovements.innerHTML = '';
-
     // to check if amount is greater than 0? then type = deposit else withdrawal
     const type = amount > 0 ? 'deposit' : 'withdrawal';
 
