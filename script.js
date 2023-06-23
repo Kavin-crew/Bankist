@@ -87,3 +87,16 @@ const diplayMovements = function (movements) {
 };
 
 diplayMovements(account1.movements);
+
+//creating a function that makes acount user to its initials
+const createUsernames = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
