@@ -88,6 +88,14 @@ const diplayMovements = function (movements) {
 
 diplayMovements(account1.movements);
 
+const calcDisplayBalance = function (movements) {
+  // reduce
+  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcDisplayBalance(account1.movements);
+
 //creating a function that makes acount user to its initials
 const createUsernames = function (accounts) {
   accounts.forEach(function (account) {
@@ -100,3 +108,21 @@ const createUsernames = function (accounts) {
 };
 
 createUsernames(accounts);
+
+const movements = account1.movements;
+
+// // display only positive amount
+// const deposits = movements.filter(mov => mov > 0);
+
+// // display only negative amount
+// const withdrawals = movements.filter(mov => mov < 0);
+// console.log(deposits, withdrawals);
+
+// // getting the maximum value of the array
+// const max = movements.reduce((acc, curr) => {
+//   if (acc > curr) return acc;
+//   else return curr;
+// }, movements[0]);
+
+// console.log(max);
+// // result: 3000

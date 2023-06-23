@@ -295,3 +295,9 @@ h2 {
 .timer {
   font-weight: 600;
 }
+
+/* footer */
+footer {
+  font-size: large;
+  text-align: center;
+}
