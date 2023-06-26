@@ -79,7 +79,7 @@ const diplayMovements = function (movements) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${amount}</div>
+          <div class="movements__value">${amount} €</div>
         </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -88,13 +88,40 @@ const diplayMovements = function (movements) {
 
 diplayMovements(account1.movements);
 
+//display total and display as current balance
 const calcDisplayBalance = function (movements) {
   // reduce
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance} €`;
 };
-
 calcDisplayBalance(account1.movements);
+
+//display total deposits, withdrawals and interest
+const calcDisplaySummary = function (movements) {
+  // displaying the total deposits
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, curr) => acc + curr);
+  console.log(income);
+  labelSumIn.textContent = `${income}€`;
+
+  // displaying total withdrawals
+  const withdrawals = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumOut.textContent = `${Math.abs(withdrawals)}€`;
+
+  // displaying the interest
+  // every deposit * 1.2 = interest
+  // only if interest atleast 1 euro, if not exclude interest below 1 euro
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
 
 //creating a function that makes acount user to its initials
 const createUsernames = function (accounts) {
@@ -106,23 +133,6 @@ const createUsernames = function (accounts) {
       .join('');
   });
 };
-
 createUsernames(accounts);
 
 const movements = account1.movements;
-
-// // display only positive amount
-// const deposits = movements.filter(mov => mov > 0);
-
-// // display only negative amount
-// const withdrawals = movements.filter(mov => mov < 0);
-// console.log(deposits, withdrawals);
-
-// // getting the maximum value of the array
-// const max = movements.reduce((acc, curr) => {
-//   if (acc > curr) return acc;
-//   else return curr;
-// }, movements[0]);
-
-// console.log(max);
-// // result: 3000
