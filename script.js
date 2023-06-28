@@ -102,7 +102,6 @@ const calcDisplaySummary = function (movements) {
   const income = movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr);
-  console.log(income);
   labelSumIn.textContent = `${income}€`;
 
   // displaying total withdrawals
@@ -136,3 +135,38 @@ const createUsernames = function (accounts) {
 createUsernames(accounts);
 
 const movements = account1.movements;
+
+// Coding Challenge #3
+// Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
+// as an arrow function, and using chaining!
+// Test data:
+// § Data 1: [5, 2, 4, 1, 15, 8, 3]
+// § Data 2: [16, 6, 10, 5, 6, 1, 4]
+
+// Test data:
+// Data 1: [5, 2, 4, 1, 15, 8, 3]
+
+// const calcAverageHumanAge = ages => {
+//   // making a new array for humanages
+//   const humanAges = ages
+//     .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+//     .filter(age => age >= 18)
+//     .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+//   return humanAges;
+// };
+
+// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
+// result: 44
+
+// find method
+// const account = accounts.find(account => account.owner === 'Jessica Davis');
+
+// // find but in for of loop
+// const accountFor = function (accounts) {
+//   for (const account of accounts) {
+//     if (account.owner === 'Jessica Davis') {
+//       console.log(account);
+//     }
+//   }
+// };
+// accountFor(accounts);
