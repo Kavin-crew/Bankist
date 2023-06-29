@@ -65,7 +65,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // procedures
 
-const diplayMovements = function (movements) {
+const displayMovements = function (movements) {
   // to set movements dummy inputs to empty
   containerMovements.innerHTML = '';
 
@@ -86,26 +86,23 @@ const diplayMovements = function (movements) {
   });
 };
 
-diplayMovements(account1.movements);
-
 //display total and display as current balance
 const calcDisplayBalance = function (movements) {
   // reduce
   const balance = movements.reduce((acc, curr) => acc + curr, 0);
   labelBalance.textContent = `${balance} €`;
 };
-calcDisplayBalance(account1.movements);
 
 //display total deposits, withdrawals and interest
-const calcDisplaySummary = function (movements) {
+const calcDisplaySummary = function (acc) {
   // displaying the total deposits
-  const income = movements
+  const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr);
   labelSumIn.textContent = `${income}€`;
 
   // displaying total withdrawals
-  const withdrawals = movements
+  const withdrawals = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + curr, 0);
   labelSumOut.textContent = `${Math.abs(withdrawals)}€`;
@@ -113,14 +110,13 @@ const calcDisplaySummary = function (movements) {
   // displaying the interest
   // every deposit * 1.2 = interest
   // only if interest atleast 1 euro, if not exclude interest below 1 euro
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
-calcDisplaySummary(account1.movements);
 
 //creating a function that makes acount user to its initials
 const createUsernames = function (accounts) {
@@ -134,7 +130,38 @@ const createUsernames = function (accounts) {
 };
 createUsernames(accounts);
 
-const movements = account1.movements;
+// login functionality
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    account => account.username === inputLoginUsername.value
+  );
+
+  // optional chaining to check if current user exist
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // display UI and message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+
+    // clear user inputs
+    inputLoginUsername.value = inputLoginPin.value = '';
+
+    // to remove the focus of cursor in the inputs
+    inputLoginPin.blur();
+
+    // display movements
+    displayMovements(currentAccount.movements);
+    // display balance
+    calcDisplayBalance(currentAccount.movements);
+    // display summary
+    calcDisplaySummary(currentAccount);
+  }
+});
 
 // Coding Challenge #3
 // Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
