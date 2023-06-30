@@ -65,12 +65,16 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // procedures
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   // to set movements dummy inputs to empty
   containerMovements.innerHTML = '';
 
+  const sortedMovements = sort
+    ? movements.slice().sort((a, b) => a - b)
+    : movements;
+
   // creating html with the movements information/transaction history
-  movements.forEach(function (amount, i) {
+  sortedMovements.forEach(function (amount, i) {
     // to check if amount is greater than 0? then type = deposit else withdrawal
     const type = amount > 0 ? 'deposit' : 'withdrawal';
 
@@ -199,6 +203,24 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+// loan functionality
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+  const isEligible = currentAccount.movements.some(mov => mov >= amount * 0.1);
+
+  if (amount > 0 && isEligible) {
+    // add movements
+    currentAccount.movements.push(amount);
+
+    // update UI
+    updateUI(currentAccount);
+  }
+
+  inputLoanAmount.value = '';
+});
+
 //account close functionality
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
@@ -218,6 +240,14 @@ btnClose.addEventListener('click', function (e) {
   }
 
   inputCloseUsername.value = inputClosePin.value = '';
+});
+
+// sorting the movements
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 
 // Coding Challenge #3
@@ -254,3 +284,76 @@ btnClose.addEventListener('click', function (e) {
 //   }
 // };
 // accountFor(accounts);
+
+// console.log(account1.movements);
+// // result: Array(8) [ 200, 450, -400, 3000, -650, -130, 70, 1300 ]
+
+// /////// Equality
+// console.log(account1.movements.includes(-130));
+// // result: true
+
+// /////// Some: Condition
+// console.log(account1.movements.some(mov => mov === -130));
+// // result: true
+
+// // to check if any movements that is greater than zero
+// const anyDeposits = account1.movements.some(mov => mov > 0);
+// console.log(anyDeposits);
+// // result: true
+
+// /////// Every: Condition
+// console.log(account1.movements.every(mov => mov > 0));
+// // result: false
+
+// const arr = [[1, 2], 3, 4, 5, [7, 8, 9]];
+// console.log(arr.flat());
+// // result: Array(8) [ 1, 2, 3, 4, 5, 7, 8, 9 ]
+
+// const arrDeep = [[[2, 4], 9], 11, [12, [9, 7, 44]]];
+// console.log(arrDeep.flat(2));
+// // result: Array(8) [ 2, 4, 9, 11, 12, 9, 7, 44 ]
+
+// // flat
+// const overAllBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overAllBalance);
+// //result: 17840
+
+// // flatmap
+// const overAllBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, curr) => acc + curr, 0);
+// console.log(overAllBalance);
+// //result: 17840
+
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners.sort());
+// // result: Array(4) [ "Adam", "Jonas", "Martha", "Zach" ]
+
+// // numbers
+// console.log(account1.movements);
+
+// // return < 0, A, B (keep order)
+// // return > 0, B, A (swap order)
+
+// // Ascending
+// // account1.movements.sort((a, b) => {
+// //   if (a > b) return 1;
+// //   if (a < b) return -1;
+// // });
+
+// account1.movements.sort((a, b) => a - b);
+// console.log(account1.movements);
+// // result: Array(8) [ -650, -400, -130, 70, 200, 450, 1300, 3000 ]
+
+// // Descending
+// // account1.movements.sort((a, b) => {
+// //   if (a > b) return -1;
+// //   if (a < b) return 1;
+// // });
+
+// account1.movements.sort((a, b) => b - a);
+// console.log(account1.movements);
+// // result: Array(8) [ 3000, 1300, 450, 200, 70, -130, -400, -650 ]
