@@ -199,6 +199,27 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+//account close functionality
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      account => account.username === currentAccount.username
+    );
+
+    // delete the account
+    accounts.splice(index, 1);
+    // hide the UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputCloseUsername.value = inputClosePin.value = '';
+});
+
 // Coding Challenge #3
 // Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
 // as an arrow function, and using chaining!
