@@ -357,3 +357,121 @@ btnSort.addEventListener('click', function (e) {
 // account1.movements.sort((a, b) => b - a);
 // console.log(account1.movements);
 // // result: Array(8) [ 3000, 1300, 450, 200, 70, -130, -400, -650 ]
+
+// // creating array manually
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// // empty arrays + fill method
+// const x = new Array(7);
+// console.log(x);
+// // result: Array(7) [ <7 empty slots> ]
+
+// x.fill(1, 3, 5);
+// console.log(x);
+// // result: Array(7) [ <3 empty slots>, 1, 1, <2 empty slots> ]
+
+// x.fill(1);
+// console.log(x);
+// // result: Array(7) [ 1, 1, 1, 1, 1, 1, 1 ]
+
+// arr.fill(23, 2, 6);
+// console.log(arr);
+// // result: Array(7) [ 1, 2, 23, 23, 23, 23, 7 ]
+
+// // creating an array programmatically
+// // Array.from
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+// // result: Array(7) [ 1, 1, 1, 1, 1, 1, 1 ]
+
+// const z = Array.from({ length: 7 }, (_, i) => i + 1);
+// console.log(z);
+// // result: Array(7) [ 1, 2, 3, 4, 5, 6, 7 ]
+
+// // coding exercise
+// // create 100 dice rolls
+// const diceRolls = Array.from(
+//   { length: 100 },
+//   () => Math.trunc(Math.random() * 6) + 1
+// );
+// console.log(diceRolls);
+
+// labelBalance.addEventListener('click', function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     // mapping
+//     el => el.textContent.replace('€', '')
+//   );
+
+//   console.log(movementsUI);
+//   // result: Array(8) [ "1300 ", "70 ", "-130 ", "-650 ", "3000 ", "-400 ", "450 ", "200 " ]
+
+//   // can also be written but we can do mapping separately
+//   const movementsUI2 = [document.querySelectorAll('.movements__value')];
+//   console.log(movementsUI2);
+//   // result: Array [ NodeList(8) ]
+// });
+
+// array methods practice
+const bankDepositSum = accounts
+  // gather all elements in movements array
+  .flatMap(acc => acc.movements)
+  // filter only positive numbers
+  .filter(mov => mov > 0)
+  // add all numbers
+  .reduce((acc, curr) => acc + curr, 0);
+console.log(bankDepositSum);
+// result: 25180
+
+// to check if there is deposit atleast 1000
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov >= 1000).length;
+console.log(numDeposits1000);
+// result: 6
+
+const numDeposits1000Reduce = accounts
+  .flatMap(acc => acc.movements)
+  // .reduce((count, curr) => (curr >= 1000 ? count + 1 : count), 0);
+  .reduce((count, curr) => (curr >= 1000 ? ++count : count), 0);
+console.log(numDeposits1000Reduce);
+// result: 6
+
+// get the sum of deposits and withdrawals in an object
+// sums was destructured to { deposits, withdrawals }
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, curr) => {
+      // curr > 0 ? (sums.deposits += curr) : (sums.withdrawals += curr);
+      sums[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
+      return sums;
+    },
+    { deposits: 0, withdrawals: 0 }
+  );
+console.log(deposits, withdrawals);
+// result: Object { deposits: 25180, withdrawals: -7340 }
+// result: 25180 -7340
+
+// convert strings with upppercase first letter with exceptions
+const convertTitleCase = function (title) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+
+  const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with'];
+
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => (exceptions.includes(word) ? word : capitalize(word)))
+    .join(' ');
+  return capitalize(titleCase);
+};
+
+console.log(convertTitleCase('this is a nice title'));
+console.log(convertTitleCase('this is a LONG title but not too long'));
+console.log(convertTitleCase('and here is another title with an EXAMPLE'));
+// result:
+// This Is a Nice Title
+// This Is a Long Title but Not Too Long
+// And Here Is Another Title with an Example
