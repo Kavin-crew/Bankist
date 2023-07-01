@@ -6,6 +6,7 @@ creating a simple application in regards with working with arrays
 https://kavin-crew.github.io/bankist/
 
 credentials:
+
 owner: "Jonas Schmedtmann"​​ username: js pin: 1111 
 
 owner: "Jessica Davis" username: jd​​ pin: 2222​​  
