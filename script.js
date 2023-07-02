@@ -4,12 +4,29 @@
 /////////////////////////////////////////////////
 // BANKIST APP
 
+/////////////////////////////////////////////////
 // Data
+
+// DIFFERENT DATA! Contains movement dates, currency and locale
+
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+
+  movementsDates: [
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2020-05-27T17:01:17.194Z',
+    '2020-07-11T23:36:17.929Z',
+    '2020-07-12T10:51:36.790Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
 
 const account2 = {
@@ -17,23 +34,22 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+
+  movementsDates: [
+    '2019-11-01T13:15:33.035Z',
+    '2019-11-30T09:48:16.867Z',
+    '2019-12-25T06:04:23.907Z',
+    '2020-01-25T14:18:46.235Z',
+    '2020-02-05T16:33:06.386Z',
+    '2020-04-10T14:43:26.374Z',
+    '2020-06-25T18:49:59.371Z',
+    '2020-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
-const account3 = {
-  owner: 'Steven Thomas Williams',
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
-  interestRate: 0.7,
-  pin: 3333,
-};
-
-const account4 = {
-  owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
-  interestRate: 1,
-  pin: 4444,
-};
-
-const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -83,7 +99,7 @@ const displayMovements = function (movements, sort = false) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${amount} €</div>
+          <div class="movements__value">${amount.toFixed(2)} €</div>
         </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -94,7 +110,7 @@ const displayMovements = function (movements, sort = false) {
 const calcDisplayBalance = function (account) {
   // reduce
   account.balance = account.movements.reduce((acc, curr) => acc + curr, 0);
-  labelBalance.textContent = `${account.balance} €`;
+  labelBalance.textContent = `${account.balance.toFixed(2)} €`;
 };
 
 //display total deposits, withdrawals and interest
@@ -103,13 +119,13 @@ const calcDisplaySummary = function (acc) {
   const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, curr) => acc + curr);
-  labelSumIn.textContent = `${income}€`;
+  labelSumIn.textContent = `${income.toFixed(2)}€`;
 
   // displaying total withdrawals
   const withdrawals = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, curr) => acc + curr, 0);
-  labelSumOut.textContent = `${Math.abs(withdrawals)}€`;
+  labelSumOut.textContent = `${Math.abs(withdrawals).toFixed(2)}€`;
 
   // displaying the interest
   // every deposit * 1.2 = interest
@@ -119,7 +135,7 @@ const calcDisplaySummary = function (acc) {
     .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 //creating a function that makes acount user to its initials
@@ -250,360 +266,94 @@ btnSort.addEventListener('click', function (e) {
   sorted = !sorted;
 });
 
-// Coding Challenge #3
-// Rewrite the 'calcAverageHumanAge' function from Challenge #2, but this time
-// as an arrow function, and using chaining!
-// Test data:
-// § Data 1: [5, 2, 4, 1, 15, 8, 3]
-// § Data 2: [16, 6, 10, 5, 6, 1, 4]
-
-// Test data:
-// Data 1: [5, 2, 4, 1, 15, 8, 3]
-
-// const calcAverageHumanAge = ages => {
-//   // making a new array for humanages
-//   const humanAges = ages
-//     .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
-//     .filter(age => age >= 18)
-//     .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
-//   return humanAges;
-// };
-
-// console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
-// result: 44
-
-// find method
-// const account = accounts.find(account => account.owner === 'Jessica Davis');
-
-// // find but in for of loop
-// const accountFor = function (accounts) {
-//   for (const account of accounts) {
-//     if (account.owner === 'Jessica Davis') {
-//       console.log(account);
-//     }
-//   }
-// };
-// accountFor(accounts);
-
-// console.log(account1.movements);
-// // result: Array(8) [ 200, 450, -400, 3000, -650, -130, 70, 1300 ]
-
-// /////// Equality
-// console.log(account1.movements.includes(-130));
-// // result: true
-
-// /////// Some: Condition
-// console.log(account1.movements.some(mov => mov === -130));
-// // result: true
-
-// // to check if any movements that is greater than zero
-// const anyDeposits = account1.movements.some(mov => mov > 0);
-// console.log(anyDeposits);
-// // result: true
-
-// /////// Every: Condition
-// console.log(account1.movements.every(mov => mov > 0));
-// // result: false
-
-// const arr = [[1, 2], 3, 4, 5, [7, 8, 9]];
-// console.log(arr.flat());
-// // result: Array(8) [ 1, 2, 3, 4, 5, 7, 8, 9 ]
-
-// const arrDeep = [[[2, 4], 9], 11, [12, [9, 7, 44]]];
-// console.log(arrDeep.flat(2));
-// // result: Array(8) [ 2, 4, 9, 11, 12, 9, 7, 44 ]
-
-// // flat
-// const overAllBalance = accounts
-//   .map(acc => acc.movements)
-//   .flat()
-//   .reduce((acc, curr) => acc + curr, 0);
-// console.log(overAllBalance);
-// //result: 17840
-
-// // flatmap
-// const overAllBalance2 = accounts
-//   .flatMap(acc => acc.movements)
-//   .reduce((acc, curr) => acc + curr, 0);
-// console.log(overAllBalance);
-// //result: 17840
-
-// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
-// console.log(owners.sort());
-// // result: Array(4) [ "Adam", "Jonas", "Martha", "Zach" ]
-
-// // numbers
-// console.log(account1.movements);
-
-// // return < 0, A, B (keep order)
-// // return > 0, B, A (swap order)
-
-// // Ascending
-// // account1.movements.sort((a, b) => {
-// //   if (a > b) return 1;
-// //   if (a < b) return -1;
-// // });
-
-// account1.movements.sort((a, b) => a - b);
-// console.log(account1.movements);
-// // result: Array(8) [ -650, -400, -130, 70, 200, 450, 1300, 3000 ]
-
-// // Descending
-// // account1.movements.sort((a, b) => {
-// //   if (a > b) return -1;
-// //   if (a < b) return 1;
-// // });
-
-// account1.movements.sort((a, b) => b - a);
-// console.log(account1.movements);
-// // result: Array(8) [ 3000, 1300, 450, 200, 70, -130, -400, -650 ]
-
-// // creating array manually
-// const arr = [1, 2, 3, 4, 5, 6, 7];
-// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
-
-// // empty arrays + fill method
-// const x = new Array(7);
-// console.log(x);
-// // result: Array(7) [ <7 empty slots> ]
-
-// x.fill(1, 3, 5);
-// console.log(x);
-// // result: Array(7) [ <3 empty slots>, 1, 1, <2 empty slots> ]
-
-// x.fill(1);
-// console.log(x);
-// // result: Array(7) [ 1, 1, 1, 1, 1, 1, 1 ]
-
-// arr.fill(23, 2, 6);
-// console.log(arr);
-// // result: Array(7) [ 1, 2, 23, 23, 23, 23, 7 ]
-
-// // creating an array programmatically
-// // Array.from
-// const y = Array.from({ length: 7 }, () => 1);
-// console.log(y);
-// // result: Array(7) [ 1, 1, 1, 1, 1, 1, 1 ]
-
-// const z = Array.from({ length: 7 }, (_, i) => i + 1);
-// console.log(z);
-// // result: Array(7) [ 1, 2, 3, 4, 5, 6, 7 ]
-
-// // coding exercise
-// // create 100 dice rolls
-// const diceRolls = Array.from(
-//   { length: 100 },
-//   () => Math.trunc(Math.random() * 6) + 1
-// );
-// console.log(diceRolls);
-
-// labelBalance.addEventListener('click', function () {
-//   const movementsUI = Array.from(
-//     document.querySelectorAll('.movements__value'),
-//     // mapping
-//     el => el.textContent.replace('€', '')
-//   );
-
-//   console.log(movementsUI);
-//   // result: Array(8) [ "1300 ", "70 ", "-130 ", "-650 ", "3000 ", "-400 ", "450 ", "200 " ]
-
-//   // can also be written but we can do mapping separately
-//   const movementsUI2 = [document.querySelectorAll('.movements__value')];
-//   console.log(movementsUI2);
-//   // result: Array [ NodeList(8) ]
-// });
-
-// // array methods practice
-// const bankDepositSum = accounts
-//   // gather all elements in movements array
-//   .flatMap(acc => acc.movements)
-//   // filter only positive numbers
-//   .filter(mov => mov > 0)
-//   // add all numbers
-//   .reduce((acc, curr) => acc + curr, 0);
-// console.log(bankDepositSum);
-// // result: 25180
-
-// // to check if there is deposit atleast 1000
-// const numDeposits1000 = accounts
-//   .flatMap(acc => acc.movements)
-//   .filter(mov => mov >= 1000).length;
-// console.log(numDeposits1000);
-// // result: 6
-
-// const numDeposits1000Reduce = accounts
-//   .flatMap(acc => acc.movements)
-//   // .reduce((count, curr) => (curr >= 1000 ? count + 1 : count), 0);
-//   .reduce((count, curr) => (curr >= 1000 ? ++count : count), 0);
-// console.log(numDeposits1000Reduce);
-// // result: 6
-
-// // get the sum of deposits and withdrawals in an object
-// // sums was destructured to { deposits, withdrawals }
-// const { deposits, withdrawals } = accounts
-//   .flatMap(acc => acc.movements)
-//   .reduce(
-//     (sums, curr) => {
-//       // curr > 0 ? (sums.deposits += curr) : (sums.withdrawals += curr);
-//       sums[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
-//       return sums;
-//     },
-//     { deposits: 0, withdrawals: 0 }
-//   );
-// console.log(deposits, withdrawals);
-// // result: Object { deposits: 25180, withdrawals: -7340 }
-// // result: 25180 -7340
-
-// // convert strings with upppercase first letter with exceptions
-// const convertTitleCase = function (title) {
-//   const capitalize = str => str[0].toUpperCase() + str.slice(1);
-
-//   const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'on', 'in', 'with'];
-
-//   const titleCase = title
-//     .toLowerCase()
-//     .split(' ')
-//     .map(word => (exceptions.includes(word) ? word : capitalize(word)))
-//     .join(' ');
-//   return capitalize(titleCase);
-// };
-
-// console.log(convertTitleCase('this is a nice title'));
-// console.log(convertTitleCase('this is a LONG title but not too long'));
-// console.log(convertTitleCase('and here is another title with an EXAMPLE'));
-// // result:
-// // This Is a Nice Title
-// // This Is a Long Title but Not Too Long
-// // And Here Is Another Title with an Example
-
-// Julia and Kate are still studying dogs, and this time they are studying if dogs are
-// eating too much or too little.
-// Eating too much means the dog's current food portion is larger than the
-// recommended portion, and eating too little is the opposite.
-// Eating an okay amount means the dog's current food portion is within a range 10%
-// above and 10% below the recommended portion (see hint).
-// Your tasks:
-
-// 1. Loop over the 'dogs' array containing dog objects, and for each dog, calculate
-// the recommended food portion and add it to the object as a new property. Do
-// not create a new array, simply loop over the array. Forumla:
-// recommendedFood = weight ** 0.75 * 28. (The result is in grams of
-// food, and the weight needs to be in kg)
-
-// 2. Find Sarah's dog and log to the console whether it's eating too much or too
-// little. Hint: Some dogs have multiple owners, so you first need to find Sarah in
-// the owners array, and so this one is a bit tricky (on purpose) 🤓
-// 3. Create an array containing all owners of dogs who eat too much
-// ('ownersEatTooMuch') and an array with all owners of dogs who eat too little
-// ('ownersEatTooLittle').
-
-// 4. Log a string to the console for each array created in 3., like this: "Matilda and
-// Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat
-// too little!"
-
-// 5. Log to the console whether there is any dog eating exactly the amount of food
-// that is recommended (just true or false)
-
-// 6. Log to the console whether there is any dog eating an okay amount of food
-// (just true or false)
-
-// 7. Create an array containing the dogs that are eating an okay amount of food (try
-// to reuse the condition used in 6.)
-
-// 8. Create a shallow copy of the 'dogs' array and sort it by recommended food
-// portion in an ascending order (keep in mind that the portions are inside the
-// array's objects 😉)
-
-// The Complete JavaScript Course 26
-// Hints:
-// § Use many different tools to solve these challenges, you can use the summary
-// lecture to choose between them 😉
-
-// § Being within a range 10% above and below the recommended portion means:
-// current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the
-// recommended portion.
-// Test data:
-
-// const dogs = [
-//   { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-//   { weight: 8, curFood: 200, owners: ['Matilda'] },
-//   { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
-//   { weight: 32, curFood: 340, owners: ['Michael'] },
-// ];
-
-// // 1.
-// const recommendedFood = function (dogs) {
-//   dogs.forEach(function (dog) {
-//     dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
-//   });
-// };
-
-// recommendedFood(dogs);
-// console.log(dogs);
-
-// // 2.
-// const sarahsDog = dogs.find(dog => dog.owners.includes('Sarah'));
-// console.log(sarahsDog);
-// // result: Object { weight: 13, curFood: 275, owners: (2) […], recommendedFood: 191 }
-
-// console.log(
-//   `Sarah's dog is eating too ${
-//     sarahsDog.curFood > sarahsDog.recommendedFood ? 'much' : 'little'
-//   }`
-// );
-// // result: Sarah's dog is eating too much
-
-// // 3. my solution
-// // let ownersEatTooMuch = [];
-// // let ownersEatTooLittle = [];
-// // const dogChecker = dogs.map(dog =>
-// //   dog.curFood > dog.recommendedFood
-// //     ? ownersEatTooMuch.push(dog.owners)
-// //     : ownersEatTooLittle.push(dog.owners)
-// // );
-// // console.log(ownersEatTooMuch, ownersEatTooLittle);
-
-// // 3. jonas solution
-// const ownersEatTooMuch = dogs
-//   .filter(dog => dog.curFood > dog.recommendedFood)
-//   .flatMap(dog => dog.owners);
-// console.log(ownersEatTooMuch);
-// // result: ['Matilda', 'Sarah', 'John'];
-
-// const ownersEatTooLittle = dogs
-//   .filter(dog => dog.curFood < dog.recommendedFood)
-//   .flatMap(dog => dog.owners);
-// console.log(ownersEatTooLittle);
-// // result: [ "Alice", "Bob", "Michael" ]
-
-// // 4.
-// console.log(
-//   `"${ownersEatTooMuch.join(
-//     ' and '
-//   )}'s dogs eat too much!" and "${ownersEatTooLittle.join(
-//     ' and '
-//   )}'s dogs eat too little!"`
-// );
-// // result: "Matilda and Sarah and John's dogs eat too much!" and "Alice and Bob and Michael's dogs eat too little!"
-
-// // 5.
-// console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
-// // result: false
-
-// // 6.
-// const checkEatingOkay = dog =>
-//   dog.curFood > dog.recommendedFood * 0.9 &&
-//   dog.curFood < dog.recommendedFood * 1.1;
-
-// console.log(dogs.some(checkEatingOkay));
-// // result: true
-
-// // 7.
-// console.log(dogs.filter(checkEatingOkay));
-// // result: Object { weight: 32, curFood: 340, recommendedFood: 376, … }
-
-// // 8.
-// const dogsCopy = dogs
-//   .slice()
-//   .sort((a, b) => a.recommendedFood - b.recommendedFood);
-// console.log(dogsCopy);
+// LECTURES
+
+// // conversion
+// console.log(Number('23'));
+// //23
+// console.log(+'23');
+// //23
+
+// // parsing
+// console.log(Number.parseInt('30px', 10));
+// //30
+// console.log(Number.parseInt('e23', 10));
+// //NaN
+
+// console.log(Number.parseInt('2.5rem'));
+// //2
+// console.log(Number.parseFloat('2.5rem'));
+// //2.5
+
+// //Check if value is NaN
+// console.log(Number.isNaN(20));
+// // false
+// console.log(Number.isNaN('20'));
+// // false
+// console.log(Number.isNaN(+'20X'));
+// // true
+// console.log(Number.isNaN(23 / 0));
+// // false
+
+// //Check if value is a number
+// console.log(Number.isFinite(20));
+// // true
+// console.log(Number.isFinite('20'));
+// // false
+// console.log(Number.isFinite(+'20X'));
+// // false
+// console.log(Number.isFinite(23 / 0));
+// // false
+
+// console.log(Number.isInteger(20));
+// // true
+
+// Math and Rounding
+console.log(Math.sqrt(25));
+// 5
+console.log(25 ** (1 / 2));
+// 5
+console.log(8 ** (1 / 3));
+// 2
+
+console.log(Math.max(5, 12, 16, 23, 1, 5, 7));
+// 23
+console.log(Math.max(5, 12, 16, '25', 1, 5, 7));
+// 25
+console.log(Math.max(5, 12, '33px', '25', 1, 5, 7));
+// NaN
+
+console.log(Math.min(5, 12, 16, 23, 1, 5, 7));
+// 1
+
+console.log(Math.PI * Number.parseFloat('10px') ** 2);
+// 314.1592653589793
+
+console.log(Math.trunc(Math.random() * 6) + 1);
+
+const randoInt = (min, max) =>
+  Math.trunc(Math.random() * (max - min) + 1) + min;
+
+console.log(randoInt(10, 20));
+
+// Rounding integers
+console.log(Math.round(23.3));
+console.log(Math.round(23.9));
+
+console.log(Math.ceil(23.3));
+console.log(Math.ceil(23.9));
+
+console.log(Math.floor(23.3));
+console.log(Math.floor('23.9'));
+
+console.log(Math.trunc(23.3));
+console.log(Math.trunc('23.9'));
+
+console.log(Math.floor(-23.3));
+console.log(Math.floor(-23.3));
+
+// rounding decimals
+console.log((2.7).toFixed(0));
+console.log((2.7).toFixed(3));
+console.log((2.345).toFixed(2));
+console.log(+(2.345).toFixed(2));
