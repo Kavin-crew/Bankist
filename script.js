@@ -308,52 +308,70 @@ btnSort.addEventListener('click', function (e) {
 // console.log(Number.isInteger(20));
 // // true
 
-// Math and Rounding
-console.log(Math.sqrt(25));
-// 5
-console.log(25 ** (1 / 2));
-// 5
-console.log(8 ** (1 / 3));
-// 2
+// // Math and Rounding
+// console.log(Math.sqrt(25));
+// // 5
+// console.log(25 ** (1 / 2));
+// // 5
+// console.log(8 ** (1 / 3));
+// // 2
 
-console.log(Math.max(5, 12, 16, 23, 1, 5, 7));
-// 23
-console.log(Math.max(5, 12, 16, '25', 1, 5, 7));
-// 25
-console.log(Math.max(5, 12, '33px', '25', 1, 5, 7));
-// NaN
+// console.log(Math.max(5, 12, 16, 23, 1, 5, 7));
+// // 23
+// console.log(Math.max(5, 12, 16, '25', 1, 5, 7));
+// // 25
+// console.log(Math.max(5, 12, '33px', '25', 1, 5, 7));
+// // NaN
 
-console.log(Math.min(5, 12, 16, 23, 1, 5, 7));
-// 1
+// console.log(Math.min(5, 12, 16, 23, 1, 5, 7));
+// // 1
 
-console.log(Math.PI * Number.parseFloat('10px') ** 2);
-// 314.1592653589793
+// console.log(Math.PI * Number.parseFloat('10px') ** 2);
+// // 314.1592653589793
 
-console.log(Math.trunc(Math.random() * 6) + 1);
+// console.log(Math.trunc(Math.random() * 6) + 1);
 
-const randoInt = (min, max) =>
-  Math.trunc(Math.random() * (max - min) + 1) + min;
+// const randoInt = (min, max) =>
+//   Math.trunc(Math.random() * (max - min) + 1) + min;
 
-console.log(randoInt(10, 20));
+// console.log(randoInt(10, 20));
 
-// Rounding integers
-console.log(Math.round(23.3));
-console.log(Math.round(23.9));
+// // Rounding integers
+// console.log(Math.round(23.3));
+// console.log(Math.round(23.9));
 
-console.log(Math.ceil(23.3));
-console.log(Math.ceil(23.9));
+// console.log(Math.ceil(23.3));
+// console.log(Math.ceil(23.9));
 
-console.log(Math.floor(23.3));
-console.log(Math.floor('23.9'));
+// console.log(Math.floor(23.3));
+// console.log(Math.floor('23.9'));
 
-console.log(Math.trunc(23.3));
-console.log(Math.trunc('23.9'));
+// console.log(Math.trunc(23.3));
+// console.log(Math.trunc('23.9'));
 
-console.log(Math.floor(-23.3));
-console.log(Math.floor(-23.3));
+// console.log(Math.floor(-23.3));
+// console.log(Math.floor(-23.3));
 
-// rounding decimals
-console.log((2.7).toFixed(0));
-console.log((2.7).toFixed(3));
-console.log((2.345).toFixed(2));
-console.log(+(2.345).toFixed(2));
+// // rounding decimals
+// console.log((2.7).toFixed(0));
+// console.log((2.7).toFixed(3));
+// console.log((2.345).toFixed(2));
+// console.log(+(2.345).toFixed(2));
+
+// const future = new Date(2037, 10, 19, 15, 23);
+// console.log(future);
+// console.log(future.getFullYear());
+// console.log(future.getMonth());
+// console.log(future.getDate());
+// console.log(future.getDay());
+// console.log(future.getHours());
+// console.log(future.getMinutes());
+// console.log(future.getSeconds());
+// console.log(future.toISOString());
+// console.log(future.getTime());
+
+// console.log(Date.now());
+// console.log(new Date(1688314448858));
+
+// future.setFullYear(2050);
+// console.log(future);
