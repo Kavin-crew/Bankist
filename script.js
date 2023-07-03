@@ -207,12 +207,34 @@ const updateUI = function (account) {
 };
 
 // login functionality
-let currentAccount;
+let currentAccount, timer;
 
 // Fake always logged in
 // currentAccount = account1;
 // updateUI(currentAccount);
 // containerApp.style.opacity = 100;
+
+const startLogOutTime = function () {
+  let time = 600;
+
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -260,6 +282,10 @@ btnLogin.addEventListener('click', function (e) {
     // to remove the focus of cursor in the inputs
     inputLoginPin.blur();
 
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTime();
+
     // update UI
     updateUI(currentAccount);
   }
@@ -297,6 +323,9 @@ btnTransfer.addEventListener('click', function (e) {
 
     // update UI
     updateUI(currentAccount);
+
+    clearInterval(timer);
+    timer = startLogOutTime();
   }
 });
 
@@ -308,15 +337,20 @@ btnLoan.addEventListener('click', function (e) {
   const isEligible = currentAccount.movements.some(mov => mov >= amount * 0.1);
 
   if (amount > 0 && isEligible) {
-    // add movements
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // add movements
+      currentAccount.movements.push(amount);
 
-    // transfer date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // transfer date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // update UI
-    updateUI(currentAccount);
+      // update UI
+      updateUI(currentAccount);
+    }, 2500);
   }
+
+  clearInterval(timer);
+  timer = startLogOutTime();
 
   inputLoanAmount.value = '';
 });
@@ -459,3 +493,21 @@ btnSort.addEventListener('click', function (e) {
 
 // future.setFullYear(2050);
 // console.log(future);
+
+// const ingredients = ['olive', 'spinach'];
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
+//   3000,
+//   ...ingredients
+// );
+
+// if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+// //setInterval
+// setInterval(function () {
+//   const now = new Date();
+//   const hour = `${now.getHours()}`.padStart(2, 0);
+//   const minute = `${now.getMinutes()}`.padStart(2, 0);
+//   const getSeconds = `${now.getSeconds()}`.padStart(2, 0);
+//   console.log(`${hour}:${minute}:${getSeconds}`);
+// }, 1000);
