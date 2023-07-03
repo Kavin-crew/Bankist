@@ -100,6 +100,7 @@ const calcDate = function (date, locale) {
   }
 };
 
+// reusable currency formatter
 const formatCurrency = function (value, locale, currency) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
